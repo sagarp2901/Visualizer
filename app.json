@@ -1,8 +1,8 @@
 {
 	"expo": {
-		"name": "Visualizer",
-		"description": "Data Visualizations about latest trends",
-		"slug": "visualizer",
+		"name": "ViruSahastrabudhhe",
+		"description": "Data Visualizations about latest things around the world",
+		"slug": "virusahastrabudhhe",
 		"privacy": "public",
 		"sdkVersion": "36.0.0",
 		"platforms": [ "ios", "android", "web" ],
@@ -20,14 +20,14 @@
 		},
 		"assetBundlePatterns": [ "**/*" ],
 		"ios": {
-			"bundleIdentifier": "com.sagarpatel.visualizer",
+			"bundleIdentifier": "com.sagarpatel.virusahastrabudhhe",
 			"config": {
 				"googleMapsApiKey": "AIzaSyDEDlsTIDM12nZXq9_jrUZOJroDTeL0YS0"
 			},
 			"supportsTablet": true
 		},
 		"android": {
-			"package": "com.sagarpatel.visualizer",
+			"package": "com.sagarpatel.virusahastrabudhhe",
 			"config": {
 				"googleMaps": {
 					"apiKey": "AIzaSyDEDlsTIDM12nZXq9_jrUZOJroDTeL0YS0"
