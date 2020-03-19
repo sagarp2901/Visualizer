@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, View, Text, Dimensions } from 'react-native';
 import ChartView from '../react-native-highcharts';
-import { getDailyReport, formatDailyMarkers, getTotals, formatDashboardData, getCases } from '../services/FetchData';
+import { formatDashboardData, getCases } from '../services/FetchData';
 import { Card } from 'react-native-elements';
 import { readString } from 'react-papaparse';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native-gesture-handler';
 const { width, height } = Dimensions.get('window');
 
 const getConfig = (data) => ({
