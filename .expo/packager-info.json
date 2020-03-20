@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 27226,
+  "expoServerNgrokUrl": "https://wq-ktm.sagar2901.visualizer.exp.direct",
+  "packagerNgrokUrl": "https://packager.wq-ktm.sagar2901.visualizer.exp.direct",
+  "ngrokPid": 27292
 }

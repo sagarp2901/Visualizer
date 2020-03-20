@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Text, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import ChartView from '../react-native-highcharts';
-import { formatChartData, getCases, getCountries, formatDropdownCountries } from '../services/FetchData';
+import { formatChartData, getCases, formatDropdownCountries } from '../services/FetchData';
 import { readString } from 'react-papaparse';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from 'react-native-elements';
@@ -104,6 +104,8 @@ export default class TimeSeriesScreen extends React.Component {
 
 		this.createChart = this.createChart.bind(this);
 		this.updateCountry = this.updateCountry.bind(this);
+		this.renderChart = this.renderChart.bind(this);
+		this.renderLegends = this.renderLegends.bind(this);
 	}
 
 	async componentDidMount() {
@@ -171,8 +173,9 @@ export default class TimeSeriesScreen extends React.Component {
 		this.setState({ country });
 		await this.createChart();
 	}
-	render() {
-		const { confirmedSeries, recoveredSeries, deadSeries, xAxis, countries } = this.state;
+
+	renderChart() {
+		const { confirmedSeries, recoveredSeries, deadSeries, xAxis, country } = this.state;
 		const chartConfig = getConfig({ confirmedSeries, recoveredSeries, deadSeries, xAxis });
 		const options = {
 			global: {
@@ -183,11 +186,40 @@ export default class TimeSeriesScreen extends React.Component {
 				thousandsSep: ','
 			}
 		};
+		if (!country) {
+			return (
+				<View style={styles.msgContainer}>
+					<Text>Select a country below to see time series</Text>
+				</View>
+			);
+		} else {
+			return <ChartView style={{ height: height / 1.4 }} config={chartConfig} options={options} stock={true} />;
+		}
+	}
+
+	renderLegends() {
+		if (!this.state.country) return <View />;
+		return (
+			<Card containerStyle={[ styles.card, { elevation: 0 } ]}>
+				<View style={{ flexDirection: 'row' }}>
+					<Text style={styles.text}>Total Confirmed:</Text>
+					<Text style={[ styles.text, styles.yellow ]}>{this.numberFormat(this.state.countConfirmed)}</Text>
+				</View>
+				<View style={{ flexDirection: 'row' }}>
+					<Text style={styles.text}>Total Recovered:</Text>
+					<Text style={[ styles.text, styles.green ]}>{this.numberFormat(this.state.countRecovered)}</Text>
+				</View>
+				<View style={{ flexDirection: 'row' }}>
+					<Text style={styles.text}>Total Deceased:</Text>
+					<Text style={[ styles.text, styles.red ]}>{this.numberFormat(this.state.countDead)}</Text>
+				</View>
+			</Card>
+		);
+	}
+	render() {
 		return (
 			<SafeAreaView style={styles.container}>
-				<View style={styles.charContainer}>
-					<ChartView style={{ height: height / 1.4 }} config={chartConfig} options={options} stock={true} />
-				</View>
+				<View style={styles.charContainer}>{this.renderChart()}</View>
 				<View style={styles.pickerContainer}>
 					<RNPickerSelect
 						style={{
@@ -203,31 +235,14 @@ export default class TimeSeriesScreen extends React.Component {
 							}
 						}}
 						onValueChange={this.updateCountry}
-						items={countries}
+						items={this.state.countries}
 						placeholder={{ label: 'Select a Country...', value: null }}
 						Icon={() => {
 							return <MaterialCommunityIcons name='chevron-down' size={30} color='gray' />;
 						}}
 					/>
 				</View>
-				<Card containerStyle={[ styles.card, { elevation: 0 } ]}>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={styles.text}>Total Confirmed:</Text>
-						<Text style={[ styles.text, styles.yellow ]}>
-							{this.numberFormat(this.state.countConfirmed)}
-						</Text>
-					</View>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={styles.text}>Total Recovered:</Text>
-						<Text style={[ styles.text, styles.green ]}>
-							{this.numberFormat(this.state.countRecovered)}
-						</Text>
-					</View>
-					<View style={{ flexDirection: 'row' }}>
-						<Text style={styles.text}>Total Deceased:</Text>
-						<Text style={[ styles.text, styles.red ]}>{this.numberFormat(this.state.countDead)}</Text>
-					</View>
-				</Card>
+				{this.renderLegends()}
 			</SafeAreaView>
 		);
 	}
@@ -277,6 +292,12 @@ const styles = StyleSheet.create({
 		color: '#fbc02d',
 		fontSize: width * 0.03,
 		paddingLeft: 10
+	},
+	msgContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginVertical: height / 2.8
 	}
 });
 
