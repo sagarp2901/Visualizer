@@ -20,6 +20,62 @@ const getConfig = (data) => ({
 	yAxis: {
 		title: { text: 'Total Count' }
 	},
+	navigator: {
+		enabled: false
+	},
+	rangeSelector: {
+		inputEnabled: false,
+		inputDateFormat: '%Y-%d-%m',
+		inputEditDateFormat: '%Y-%d-%m',
+		buttonSpacing: 10,
+		buttonTheme: {
+			// styles for the buttons
+			r: 8,
+			fill: 'none',
+			stroke: 'none',
+			width: 60,
+			height: 18,
+			style: {
+				color: '#039',
+				fontSize: '13px'
+			},
+			states: {
+				hover: {
+					fill: '#333333',
+					stroke: '#333333'
+				},
+				select: {
+					fill: '#039',
+					style: {
+						color: 'white'
+					}
+				}
+			}
+		},
+		buttons: [
+			{
+				type: 'day',
+				count: 10,
+				text: '10 Days'
+			},
+			{
+				type: 'day',
+				count: 20,
+				text: '20 Days'
+			},
+			{
+				type: 'day',
+				count: 30,
+				text: '30 Days'
+			},
+			{
+				type: 'all',
+				count: data.confirmedSeries.length - 1,
+				text: 'All'
+			}
+		]
+	},
+
 	xAxis: {
 		categories: data.xAxis
 	},
@@ -94,7 +150,7 @@ export default class TimeSeriesScreen extends React.Component {
 				});
 			}
 		} catch (e) {
-			console.warn(e);
+			//	console.warn(e);
 		}
 	}
 
@@ -122,7 +178,7 @@ export default class TimeSeriesScreen extends React.Component {
 		return (
 			<SafeAreaView style={styles.container}>
 				<View style={styles.charContainer}>
-					<ChartView style={{ height: height / 1.4 }} config={chartConfig} options={options} />
+					<ChartView style={{ height: height / 1.4 }} config={chartConfig} options={options} stock={true} />
 					{/* <HighchartsReactNative
 						allowChartUpdate={this.allowChartUpdate}
 						useSSL={true}
@@ -204,8 +260,8 @@ const styles = StyleSheet.create({
 		borderColor: 'rgba(255,255,255, 0)',
 		width: width / 2.2,
 		position: 'absolute',
-		left: width / 8,
-		top: height / 14
+		right: width / 1.9,
+		top: height / 10
 	},
 	text: {
 		justifyContent: 'center',

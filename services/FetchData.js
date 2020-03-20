@@ -96,7 +96,7 @@ export const formatDashboardData = (data) => {
 		return { country: item[1], count: item[item.length - 1] };
 	});
 	let count = cleaned.reduce((previousValue, currentValue) => {
-		return { count: parseInt(previousValue.count) + parseInt(currentValue.count) };
+		return { count: (parseInt(previousValue.count) || 0) + (parseInt(currentValue.count) || 0) };
 	}).count;
 	return count;
 };
@@ -119,7 +119,7 @@ export const formatChartSingleSeries = (arr) => {
 	let seriesData = [];
 	keys.forEach((key) => {
 		const val = arrValues[key];
-		seriesData.push([ key, val ]);
+		seriesData.push([ new Date(key).getTime(), val ]);
 	});
 	let seriesObj = { name: name, data: seriesData };
 	return seriesObj;
@@ -136,7 +136,7 @@ export const formatArraySeries = (arr) => {
 			let val = parseInt(row[key]);
 			sum += !isNaN(val) ? parseInt(row[key]) : 0;
 		});
-		seriesData.push([ key, sum ]);
+		seriesData.push([ new Date(key).getTime(), sum ]);
 	});
 	let seriesObj = { name: name, data: seriesData };
 	return seriesObj;
