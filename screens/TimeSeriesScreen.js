@@ -189,7 +189,7 @@ export default class TimeSeriesScreen extends React.Component {
 		if (!country) {
 			return (
 				<View style={styles.msgContainer}>
-					<Text>Select a country below to see time series</Text>
+					<Text style={{ fontSize: 20 }}>Select a Country below to display... </Text>
 				</View>
 			);
 		} else {
@@ -297,7 +297,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginVertical: height / 2.8
+		marginVertical: height / 2.8,
+		marginHorizontal: 10
 	}
 });
 
