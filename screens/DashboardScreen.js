@@ -4,6 +4,7 @@ import ChartView from '../react-native-highcharts';
 import { formatDashboardData, getCases } from '../services/FetchData';
 import { Card } from 'react-native-elements';
 import { readString } from 'react-papaparse';
+const numbro = require('numbro');
 
 const { width, height } = Dimensions.get('window');
 const getConfig = (data) => ({
@@ -106,7 +107,7 @@ export default class DashBoardScreen extends React.Component {
 	}
 
 	numberFormat(value) {
-		return value;
+		return numbro(value).format({ thousandSeparated: true });
 	}
 
 	render() {

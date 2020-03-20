@@ -6,6 +6,7 @@ import { formatChartData, getCases, formatDropdownCountries } from '../services/
 import { readString } from 'react-papaparse';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from 'react-native-elements';
+const numbro = require('numbro');
 const { width, height } = Dimensions.get('window');
 
 const getConfig = (data) => ({
@@ -166,7 +167,7 @@ export default class TimeSeriesScreen extends React.Component {
 	}
 
 	numberFormat = (value) => {
-		return value;
+		return numbro(value).format({ thousandSeparated: true });
 	};
 
 	async updateCountry(country) {

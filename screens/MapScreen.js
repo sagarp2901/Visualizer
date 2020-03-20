@@ -6,6 +6,7 @@ import { getDailyReport, formatDailyMarkers } from '../services/FetchData';
 import { readString } from 'react-papaparse';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+const numbro = require('numbro');
 
 const INITIAL_REGION = {
 	latitude: 43.6372866,
@@ -25,6 +26,10 @@ export default class MapScreen extends React.Component {
 		};
 		this.setCurrentLocation = this.setCurrentLocation.bind(this);
 	}
+
+	numberFormat = (value) => {
+		return numbro(value).format({ thousandSeparated: true });
+	};
 
 	async componentDidMount() {
 		try {
@@ -70,9 +75,9 @@ export default class MapScreen extends React.Component {
 					<Marker key={index} coordinate={marker.coordinates}>
 						<Callout style={styles.markerStyle} tooltip={true}>
 							<View style={styles.tooltipContainer}>
-								<Text style={styles.yellow}>{`Confirmed: ${marker.confirmed}`}</Text>
-								<Text style={styles.green}>{`Recovered: ${marker.recovered}`}</Text>
-								<Text style={styles.red}>{`Deceased: ${marker.dead}`}</Text>
+								<Text style={styles.yellow}>{`Confirmed: ${this.numberFormat(marker.confirmed)}`}</Text>
+								<Text style={styles.green}>{`Recovered: ${this.numberFormat(marker.recovered)}`}</Text>
+								<Text style={styles.red}>{`Deceased: ${this.numberFormat(marker.dead)}`}</Text>
 							</View>
 						</Callout>
 					</Marker>

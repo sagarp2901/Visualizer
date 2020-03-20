@@ -4,7 +4,6 @@ import ChartView from '../react-native-highcharts';
 import { getDailyReport, formatByCountry, formatSeries } from '../services/FetchData';
 import { readString } from 'react-papaparse';
 const { height } = Dimensions.get('window');
-
 const getConfig = (data) => ({
 	chart: {
 		type: 'bar',
@@ -65,10 +64,6 @@ export default class BarsScreen extends React.Component {
 		}
 	}
 
-	numberFormat = (value) => {
-		return value;
-	};
-
 	render() {
 		const { series, countries } = this.state;
 		const chartConfig = getConfig({ series, countries });
@@ -86,14 +81,6 @@ export default class BarsScreen extends React.Component {
 			<SafeAreaView style={styles.container}>
 				<View>
 					<ChartView style={{ height: height / 1.3 }} config={chartConfig} options={options} />
-					{/* <HighchartsReactNative
-				allowChartUpdate={this.allowChartUpdate}
-				useSSL={true}
-				useCDN={true}
-				modules={modules}
-				styles={styles.container}
-				options={chartConfig}
-			/> */}
 				</View>
 			</SafeAreaView>
 		);
