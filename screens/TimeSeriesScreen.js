@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
 		width: width / 2.2,
 		position: 'absolute',
 		right: width / 1.9,
-		top: height / 10
+		top: height / 8.5
 	},
 	text: {
 		justifyContent: 'center',
