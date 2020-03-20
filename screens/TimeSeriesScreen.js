@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StyleSheet, View, Text, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import ChartView from '../react-native-highcharts';
-import { formatChartData, getCases, getCountries } from '../services/FetchData';
+import { formatChartData, getCases, getCountries, formatDropdownCountries } from '../services/FetchData';
 import { readString } from 'react-papaparse';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from 'react-native-elements';
@@ -14,8 +14,6 @@ const getConfig = (data) => ({
 	},
 	chart: {
 		type: 'spline'
-		//backgroundColor: 'rgba(255, 255, 255, 0)',
-		//plotBackgroundColor: 'rgba(0,0,0,0.8)'
 	},
 	yAxis: {
 		title: { text: 'Total Count' }
@@ -94,6 +92,7 @@ export default class TimeSeriesScreen extends React.Component {
 		this.allowChartUpdate = true;
 		this.state = {
 			country: '',
+			countries: [],
 			confirmedSeries: [],
 			deadSeries: [],
 			recoveredSeries: [],
@@ -124,6 +123,12 @@ export default class TimeSeriesScreen extends React.Component {
 			const responseRecovered = await getCases('RECOVERED');
 			const dataRecovered = await readString(responseRecovered, { header: true });
 
+			//Dynamically set countries from confirmed dataset here since it does not work at setState line 145
+			if (dataConfirmed) {
+				const countries = formatDropdownCountries(dataConfirmed.data);
+				this.setState({ countries });
+			}
+
 			if (dataConfirmed && dataDeaths && dataRecovered) {
 				const formattedConfirmed = formatChartData(dataConfirmed.data, this.state.country);
 				const formattedDeaths = formatChartData(dataDeaths.data, this.state.country);
@@ -150,7 +155,7 @@ export default class TimeSeriesScreen extends React.Component {
 				});
 			}
 		} catch (e) {
-			//	console.warn(e);
+			console.warn(e);
 		}
 	}
 
@@ -163,8 +168,7 @@ export default class TimeSeriesScreen extends React.Component {
 		await this.createChart();
 	}
 	render() {
-		let countries = getCountries();
-		const { confirmedSeries, recoveredSeries, deadSeries, xAxis } = this.state;
+		const { confirmedSeries, recoveredSeries, deadSeries, xAxis, countries } = this.state;
 		const chartConfig = getConfig({ confirmedSeries, recoveredSeries, deadSeries, xAxis });
 		const options = {
 			global: {
@@ -179,14 +183,6 @@ export default class TimeSeriesScreen extends React.Component {
 			<SafeAreaView style={styles.container}>
 				<View style={styles.charContainer}>
 					<ChartView style={{ height: height / 1.4 }} config={chartConfig} options={options} stock={true} />
-					{/* <HighchartsReactNative
-						allowChartUpdate={this.allowChartUpdate}
-						useSSL={true}
-						useCDN={true}
-						modules={modules}
-						styles={styles.container}
-						options={chartConfig}
-					/> */}
 				</View>
 				<View style={styles.pickerContainer}>
 					<RNPickerSelect

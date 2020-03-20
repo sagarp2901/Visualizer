@@ -255,7 +255,6 @@ export const getCountryArr = () => {
 		'Norway',
 		'Romania',
 		'Estonia',
-		'Netherlands',
 		'San Marino',
 		'Belarus',
 		'Iceland',
@@ -297,7 +296,6 @@ export const getCountryArr = () => {
 		'Serbia',
 		'Slovakia',
 		'Togo',
-		'French Guiana',
 		'Malta',
 		'Martinique',
 		'Bulgaria',
@@ -317,7 +315,6 @@ export const getCountryArr = () => {
 		'Korea, South',
 		'France',
 		'Cruise Ship',
-		'United Kingdom',
 		'Denmark',
 		'Czechia',
 		'Taiwan*',
@@ -326,13 +323,55 @@ export const getCountryArr = () => {
 		'Moldova',
 		'Bolivia',
 		'Honduras',
+		'United Kingdom',
 		'Congo (Kinshasa)',
 		"Cote d'Ivoire",
 		'Jamaica',
-		'Reunion',
 		'Turkey',
 		'Cuba',
-		'Guyana'
+		'Guyana',
+		'Kazakhstan',
+		'Ethiopia',
+		'Sudan',
+		'Guinea',
+		'Kenya',
+		'Antigua and Barbuda',
+		'Uruguay',
+		'Ghana',
+		'Namibia',
+		'Seychelles',
+		'Trinidad and Tobago',
+		'Venezuela',
+		'Eswatini',
+		'Gabon',
+		'Guatemala',
+		'Mauritania',
+		'Rwanda',
+		'Saint Lucia',
+		'Saint Vincent and the Grenadines',
+		'Suriname',
+		'Kosovo',
+		'Central African Republic',
+		'Congo (Brazzaville)',
+		'Equatorial Guinea',
+		'Uzbekistan',
+		'Netherlands',
+		'Benin',
+		'Liberia',
+		'Somalia',
+		'Tanzania',
+		'Barbados',
+		'Montenegro',
+		'Kyrgyzstan',
+		'Mauritius',
+		'Zambia',
+		'Djibouti',
+		'Gambia, The',
+		'Bahamas, The',
+		'Chad',
+		'El Salvador',
+		'Fiji',
+		'Nicaragua'
 	];
 };
 
@@ -350,4 +389,21 @@ export const getTotals = (markers) => {
 		});
 	}
 	return totals;
+};
+
+export const formatDropdownCountries = (data) => {
+	let countries = [];
+	data.forEach((item) => {
+		countries.push(item['Country/Region']);
+	});
+	let uniqueCountries = [];
+	countries.forEach((item) => {
+		if (item && uniqueCountries.indexOf(item) < 0) uniqueCountries.push(item);
+	});
+	uniqueCountries.sort();
+
+	const countriesList = uniqueCountries.map((item) => {
+		return { label: item, value: item };
+	});
+	return countriesList;
 };
