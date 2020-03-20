@@ -1,8 +1,8 @@
 {
 	"expo": {
-		"name": "Visualizer",
-		"description": "Data Visualizations about latest trends",
-		"slug": "visualizer",
+		"name": "Viru Saastrabuddhe",
+		"description": "Data Visualizations about latest things around the world",
+		"slug": "virusaastrabuddhe",
 		"privacy": "public",
 		"sdkVersion": "36.0.0",
 		"platforms": [ "ios", "android", "web" ],
@@ -11,7 +11,7 @@
 		"icon": "./assets/images/icon.png",
 		"scheme": "myapp",
 		"splash": {
-			"image": "./assets/images/icon.png",
+			"image": "./assets/images/splash.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -20,14 +20,14 @@
 		},
 		"assetBundlePatterns": [ "**/*" ],
 		"ios": {
-			"bundleIdentifier": "com.sagarpatel.visualizer",
+			"bundleIdentifier": "com.sagarpatel.virusaastrabuddhe",
 			"config": {
 				"googleMapsApiKey": "AIzaSyDEDlsTIDM12nZXq9_jrUZOJroDTeL0YS0"
 			},
 			"supportsTablet": true
 		},
 		"android": {
-			"package": "com.sagarpatel.visualizer",
+			"package": "com.sagarpatel.virusaastrabuddhe",
 			"config": {
 				"googleMaps": {
 					"apiKey": "AIzaSyDEDlsTIDM12nZXq9_jrUZOJroDTeL0YS0"

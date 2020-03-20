@@ -34,19 +34,19 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
        <BottomTab.Screen
-        name="Bars"
-        component={BarsScreen}
-        options={{
-          title: 'Bars',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="chart-bar" />,
-        }}
-      />
-      <BottomTab.Screen
         name="Series"
         component={TimeSeriesScreen}
         options={{
           title: 'Time Series',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="chart-line" />,
+        }}
+      />
+       <BottomTab.Screen
+        name="Bars"
+        component={BarsScreen}
+        options={{
+          title: 'Bars',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="chart-bar" />,
         }}
       />
     </BottomTab.Navigator>

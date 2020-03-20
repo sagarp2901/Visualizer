@@ -4,14 +4,15 @@ import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps';
 import { getDailyReport, formatDailyMarkers } from '../services/FetchData';
 import { readString } from 'react-papaparse';
+import * as Location from 'expo-location';
+import * as Permissions from 'expo-permissions';
 
 const INITIAL_REGION = {
-	latitude: 52.5,
-	longitude: 19.2,
+	latitude: 43.6372866,
+	longitude: -79.4036979,
 	latitudeDelta: 8.5,
 	longitudeDelta: 8.5
 };
-
 export default class MapScreen extends React.Component {
 	constructor(props) {
 		super(props);
@@ -19,12 +20,16 @@ export default class MapScreen extends React.Component {
 			markersConfirmed: [],
 			markersDead: [],
 			markersRecovered: [],
-			markers: []
+			markers: [],
+			initialRegion: INITIAL_REGION
 		};
+		this.setCurrentLocation = this.setCurrentLocation.bind(this);
 	}
 
 	async componentDidMount() {
 		try {
+			this.setCurrentLocation();
+			// Get map data
 			const jsonResponse = await getDailyReport(false);
 			const dataJson = await readString(jsonResponse, { header: true });
 			if (dataJson && dataJson.data) {
@@ -34,10 +39,30 @@ export default class MapScreen extends React.Component {
 			console.warn(e);
 		}
 	}
+
+	async setCurrentLocation() {
+		// Ask for location permission
+		let { status } = await Permissions.askAsync(Permissions.LOCATION);
+		if (status !== 'granted') {
+			// If permission is denied, default location would be used
+			console.log('Permission to access location was denied');
+		} else {
+			// Get current location
+			const location = await Location.getCurrentPositionAsync({});
+			if (location) {
+				// Set current location
+				let region = this.state.initialRegion;
+				region.latitude = location.coords.latitude;
+				region.longitude = location.coords.longitude;
+				this.setState({ initialRegion: region });
+			}
+		}
+	}
+
 	render() {
 		return (
 			<MapView
-				initialRegion={INITIAL_REGION}
+				initialRegion={this.state.initialRegion}
 				style={{ flex: 1 }}
 				provider={PROVIDER_GOOGLE}
 				clusterColor={'rgba(244,67,54,0.5)'}>
