@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Text, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, Dimensions, SafeAreaView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import ChartView from '../react-native-highcharts';
 import { formatChartData, getCases, formatDropdownCountries } from '../services/FetchData';
