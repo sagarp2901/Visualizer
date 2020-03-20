@@ -71,8 +71,8 @@ export default function App(props) {
 									<MaterialCommunityIcons
 										onPress={() =>
 											Alert.alert(
-												'Disclaimer',
-												`This App is built using the data from GitHub Repo(https://github.com/CSSEGISandData).\n\nAs stated in this repo's Terms of Use, this data is provided to the public strictly for educational and academic research purposes. The data comes from multiple publicly available sources, that do not always agree.\n\nThis App is strictly for the purpose of information and education and not for commercial use.`,
+												'About',
+												`This App is built using the data from GitHub Repo(https://github.com/CSSEGISandData) and displays interactive visuals and map to provide best available information on the current global issue.\n\nAs stated in this repo's Terms of Use, this data is provided to the public strictly for educational and academic research purposes. The data comes from multiple publicly available sources, that do not always agree.\n\nThis app does not collect or store any personal information from the user. It may access user's device location for updating current location on the map and would be stored on the device's internal storage.\n\nThis App is strictly for the purpose of information and education and not for commercial/monetary gains.\n\nPlease read the privacy policy for Google Play Services for further information.`,
 												[ { text: 'OK', onPress: () => console.log('OK Pressed') } ],
 												{ cancelable: false }
 											)}
