@@ -195,8 +195,10 @@ export const formatSeries = (formatted) => {
 	let recovered = [];
 	let deceased = [];
 	formatted.sort((a, b) => {
+		//Sort descending
 		return b.confirmed - a.confirmed;
 	});
+	// Get top 10 countries for chart config
 	let countries = formatted
 		.map((item) => {
 			return item.country;
@@ -208,6 +210,7 @@ export const formatSeries = (formatted) => {
 		deceased.push(item.dead);
 	});
 	let series = [];
+	// Get top 10 countries data for chart
 	series.push({ name: 'Confirmed', data: confirmed.slice(0, 10), color: '#F9D93E' });
 	series.push({ name: 'Recovered', data: recovered.slice(0, 10), color: '#4caf50' });
 	series.push({ name: 'Deceased', data: deceased.slice(0, 10), color: '#e53935' });
