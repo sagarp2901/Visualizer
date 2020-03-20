@@ -125,7 +125,11 @@ export default class TimeSeriesScreen extends React.Component {
 
 			//Dynamically set countries from confirmed dataset here since it does not work at setState line 145
 			if (dataConfirmed) {
-				const countries = formatDropdownCountries(dataConfirmed.data);
+				let uniqueCountries = formatDropdownCountries(dataConfirmed.data);
+				// Making this drowpdown array here since formatDropdownCountries is being used as a common function for Bars as well
+				const countries = uniqueCountries.map((item) => {
+					return { label: item, value: item };
+				});
 				this.setState({ countries });
 			}
 

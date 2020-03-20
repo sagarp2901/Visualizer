@@ -162,11 +162,10 @@ export const formatByCountry = (dataArr) => {
 			recovered: parseInt(item['Recovered']) || 0
 		};
 	});
-
-	let countries = getCountryArr();
+	// Dynamically getting countries from data
+	let countries = formatDropdownCountries(dataArr);
 
 	let dataByCountries = [];
-
 	countries.forEach((country) => {
 		const filteredByCountry = data.filter((item) => {
 			return item.country === country;
@@ -401,9 +400,5 @@ export const formatDropdownCountries = (data) => {
 		if (item && uniqueCountries.indexOf(item) < 0) uniqueCountries.push(item);
 	});
 	uniqueCountries.sort();
-
-	const countriesList = uniqueCountries.map((item) => {
-		return { label: item, value: item };
-	});
-	return countriesList;
+	return uniqueCountries;
 };
