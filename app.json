@@ -20,14 +20,14 @@
 		},
 		"assetBundlePatterns": [ "**/*" ],
 		"ios": {
-			"bundleIdentifier": "com.sagarpatel.virusaastrabuddhe",
+			"bundleIdentifier": "com.sagarpatel.visualizer",
 			"config": {
 				"googleMapsApiKey": "AIzaSyDEDlsTIDM12nZXq9_jrUZOJroDTeL0YS0"
 			},
 			"supportsTablet": true
 		},
 		"android": {
-			"package": "com.sagarpatel.virusaastrabuddhe",
+			"package": "com.sagarpatel.visualizer",
 			"config": {
 				"googleMaps": {
 					"apiKey": "AIzaSyDEDlsTIDM12nZXq9_jrUZOJroDTeL0YS0"
