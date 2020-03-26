@@ -10,7 +10,7 @@ const getConfig = (data) => ({
 		height: height / 1.3
 	},
 	title: {
-		text: 'Top 10 Affected Countries'
+		text: 'Top 15 Affected Countries'
 	},
 	xAxis: {
 		categories: data.countries
