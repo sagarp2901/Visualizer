@@ -1,38 +1,29 @@
-const BASE_URL = '';
 export const getCases = (type) => {
 	const URLS = {
 		CONFIRMED:
-			'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
+			'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv',
 		DEATHS:
-			'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv',
+			'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv',
 		RECOVERED:
-			'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv'
+			'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
 	};
-	return fetch(URLS[type], {
-		headers: {
-			Accept: 'application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet'
-		}
-	}).then((res) => res.text());
+	return fetch(URLS[type]).then((res) => res.text());
 };
 
 export const getDailyReport = (useTodayDate) => {
 	const date = useTodayDate ? getTodayDate() : getYesterdayDate();
 
 	const url = `https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/${date}.csv`;
-	return fetch(url, {
-		headers: {
-			Accept: 'application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet'
-		}
-	}).then((res) => {
+	return fetch(url).then((res) => {
 		// If today's data exist then 200 will be returned
-		return res.status == 200 ? res.text() : res.status;
+		return res.status === 200 ? res.text() : res.status;
 	});
 };
 
 export const formatMarkers = (data) => {
 	const result = data.map((item) => {
 		return {
-			title: `${item['Province/State']} - ${item['Country/Region']}`,
+			title: `${item['Province/State']} - ${item['Country_Region']}`,
 			coordinates: {
 				latitude: parseFloat(item['Lat']),
 				longitude: parseFloat(item['Long'])
@@ -43,13 +34,14 @@ export const formatMarkers = (data) => {
 };
 
 export const formatDailyMarkers = (data) => {
+	//console.log(data);
 	const result = data.map((item) => {
 		return {
-			country: item['Country/Region'],
+			country: item['Country_Region'],
 			region: item['Province/State'],
 			coordinates: {
-				latitude: parseFloat(item['Latitude']) || 0,
-				longitude: parseFloat(item['Longitude']) || 0
+				latitude: parseFloat(item['Lat']) || 0,
+				longitude: parseFloat(item['Long_']) || 0
 			},
 			confirmed: item['Confirmed'],
 			dead: item['Deaths'],
@@ -126,7 +118,7 @@ export const formatChartSingleSeries = (arr) => {
 };
 
 export const formatArraySeries = (arr) => {
-	const name = arr[0]['Country/Region'];
+	const name = arr[0]['Country_Region'];
 	const arrValues = removeProperties(arr);
 	let keys = Object.keys(arrValues[0]);
 	let seriesData = [];
@@ -156,14 +148,14 @@ export const getCountries = () => {
 export const formatByCountry = (dataArr) => {
 	let data = dataArr.map((item) => {
 		return {
-			country: item['Country/Region'],
+			country: item['Country_Region'],
 			confirmed: parseInt(item['Confirmed']) || 0,
 			dead: parseInt(item['Deaths']) || 0,
 			recovered: parseInt(item['Recovered']) || 0
 		};
 	});
 	// Dynamically getting countries from data
-	let countries = formatDropdownCountries(dataArr);
+	let countries = formatedCountries(data);
 
 	let dataByCountries = [];
 	countries.forEach((country) => {
@@ -191,6 +183,7 @@ export const formatByCountry = (dataArr) => {
 };
 
 export const formatSeries = (formatted) => {
+	const limit = 15;
 	let confirmed = [];
 	let recovered = [];
 	let deceased = [];
@@ -203,7 +196,7 @@ export const formatSeries = (formatted) => {
 		.map((item) => {
 			return item.country;
 		})
-		.slice(0, 10);
+		.slice(0, limit);
 	formatted.forEach((item) => {
 		confirmed.push(item.confirmed);
 		recovered.push(item.recovered);
@@ -211,9 +204,9 @@ export const formatSeries = (formatted) => {
 	});
 	let series = [];
 	// Get top 10 countries data for chart
-	series.push({ name: 'Confirmed', data: confirmed.slice(0, 10), color: '#F9D93E' });
-	series.push({ name: 'Recovered', data: recovered.slice(0, 10), color: '#4caf50' });
-	series.push({ name: 'Deceased', data: deceased.slice(0, 10), color: '#e53935' });
+	series.push({ name: 'Confirmed', data: confirmed.slice(0, limit), color: '#F9D93E' });
+	series.push({ name: 'Recovered', data: recovered.slice(0, limit), color: '#4caf50' });
+	series.push({ name: 'Deceased', data: deceased.slice(0, limit), color: '#e53935' });
 	return { series: series, countries: countries };
 };
 
@@ -397,6 +390,19 @@ export const formatDropdownCountries = (data) => {
 	let countries = [];
 	data.forEach((item) => {
 		countries.push(item['Country/Region']);
+	});
+	let uniqueCountries = [];
+	countries.forEach((item) => {
+		if (item && uniqueCountries.indexOf(item) < 0) uniqueCountries.push(item);
+	});
+	uniqueCountries.sort();
+	return uniqueCountries;
+};
+
+export const formatedCountries = (data) => {
+	let countries = [];
+	data.forEach((item) => {
+		countries.push(item.country);
 	});
 	let uniqueCountries = [];
 	countries.forEach((item) => {
