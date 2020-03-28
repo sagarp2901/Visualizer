@@ -69,7 +69,8 @@ export default class MapScreen extends React.Component {
 
 	setMapMode = () => {
 		const hours = new Date().getHours();
-		this.setState({ darkMap: hours >= 19 ? true : false });
+		// Set light mode between 7am and 7pm
+		this.setState({ darkMap: hours > 6 && hours < 19 ? false : true });
 	};
 
 	render() {
