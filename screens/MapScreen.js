@@ -1,5 +1,6 @@
 import React from 'react';
-import MapView from 'react-native-map-clustering';
+//import MapView from 'react-native-map-clustering';
+import MapView from '@bam.tech/react-native-component-map-clustering';
 import { StyleSheet, View, Dimensions, Text } from 'react-native';
 import { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps';
 import { getDailyReport, formatDailyMarkers } from '../services/FetchData';
@@ -19,9 +20,6 @@ export default class MapScreen extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			markersConfirmed: [],
-			markersDead: [],
-			markersRecovered: [],
 			markers: [],
 			initialRegion: INITIAL_REGION
 		};
@@ -69,10 +67,10 @@ export default class MapScreen extends React.Component {
 		return (
 			<MapView
 				customMapStyle={getMapDark()}
+				clustering={true}
 				initialRegion={this.state.initialRegion}
 				style={{ flex: 1 }}
-				provider={PROVIDER_GOOGLE}
-				clusterColor={'rgba(244,67,54,0.5)'}>
+				provider={PROVIDER_GOOGLE}>
 				{this.state.markers.map((marker, index) => (
 					<Marker key={index} coordinate={marker.coordinates}>
 						<Callout style={styles.markerStyle} tooltip={true}>
