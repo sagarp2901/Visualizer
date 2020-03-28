@@ -53,7 +53,6 @@ export const formatDailyMarkers = (data) => {
 			active: item['Active']
 		};
 	});
-	console.log(result.length);
 	return result;
 };
 
