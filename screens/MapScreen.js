@@ -6,6 +6,7 @@ import { getDailyReport, formatDailyMarkers } from '../services/FetchData';
 import { readString } from 'react-papaparse';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import { getMapDark } from '../constants/MapDark';
 const numbro = require('numbro');
 
 const INITIAL_REGION = {
@@ -75,8 +76,10 @@ export default class MapScreen extends React.Component {
 					<Marker key={index} coordinate={marker.coordinates}>
 						<Callout style={styles.markerStyle} tooltip={true}>
 							<View style={styles.tooltipContainer}>
+								<Text style={styles.white}>{marker.place}</Text>
 								<Text style={styles.yellow}>{`Confirmed: ${this.numberFormat(marker.confirmed)}`}</Text>
 								<Text style={styles.green}>{`Recovered: ${this.numberFormat(marker.recovered)}`}</Text>
+								<Text style={styles.blue}>{`Active: ${this.numberFormat(marker.active)}`}</Text>
 								<Text style={styles.red}>{`Deceased: ${this.numberFormat(marker.dead)}`}</Text>
 							</View>
 						</Callout>
@@ -118,6 +121,15 @@ const styles = StyleSheet.create({
 	},
 	yellow: {
 		color: '#fbc02d',
+		fontSize: 15
+	},
+	white: {
+		color: '#eeeeee',
+		fontSize: 15,
+		marginBottom: 5
+	},
+	blue: {
+		color: '#0288d1',
 		fontSize: 15
 	}
 });

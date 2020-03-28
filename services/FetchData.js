@@ -34,20 +34,26 @@ export const formatMarkers = (data) => {
 };
 
 export const formatDailyMarkers = (data) => {
-	//console.log(data);
-	const result = data.map((item) => {
+	// Filter out data where there's no confirmed cases
+	const filtered = data.filter((item) => {
+		const confirmedNum = parseInt(item['Confirmed']);
+		return !isNaN(confirmedNum) && confirmedNum > 0;
+	});
+	const result = filtered.map((item) => {
 		return {
 			country: item['Country_Region'],
-			region: item['Province/State'],
+			place: item['Combined_Key'],
 			coordinates: {
 				latitude: parseFloat(item['Lat']) || 0,
 				longitude: parseFloat(item['Long_']) || 0
 			},
 			confirmed: item['Confirmed'],
 			dead: item['Deaths'],
-			recovered: item['Recovered']
+			recovered: item['Recovered'],
+			active: item['Active']
 		};
 	});
+	console.log(result.length);
 	return result;
 };
 
