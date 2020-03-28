@@ -68,6 +68,7 @@ export default class MapScreen extends React.Component {
 	render() {
 		return (
 			<MapView
+				customMapStyle={getMapDark()}
 				initialRegion={this.state.initialRegion}
 				style={{ flex: 1 }}
 				provider={PROVIDER_GOOGLE}
