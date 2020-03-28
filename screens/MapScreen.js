@@ -1,13 +1,15 @@
 import React from 'react';
 //import MapView from 'react-native-map-clustering';
 import MapView from '@bam.tech/react-native-component-map-clustering';
-import { StyleSheet, View, Dimensions, Text } from 'react-native';
+import { StyleSheet, View, Dimensions, Text, Switch } from 'react-native';
 import { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps';
 import { getDailyReport, formatDailyMarkers } from '../services/FetchData';
 import { readString } from 'react-papaparse';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { getMapDark } from '../constants/MapDark';
+import { MAP_DARK } from '../constants/MapDark';
+import { MAP_LIGHT } from '../constants/MapLight';
+const { height, width } = Dimensions.get('window');
 const numbro = require('numbro');
 
 const INITIAL_REGION = {
@@ -21,6 +23,7 @@ export default class MapScreen extends React.Component {
 		super(props);
 		this.state = {
 			markers: [],
+			darkMap: false,
 			initialRegion: INITIAL_REGION
 		};
 		this.setCurrentLocation = this.setCurrentLocation.bind(this);
@@ -32,6 +35,7 @@ export default class MapScreen extends React.Component {
 
 	async componentDidMount() {
 		try {
+			this.setMapMode();
 			this.setCurrentLocation();
 			// Get map data
 			const jsonResponse = await getDailyReport(false);
@@ -63,28 +67,49 @@ export default class MapScreen extends React.Component {
 		}
 	}
 
+	setMapMode = () => {
+		const hours = new Date().getHours();
+		this.setState({ darkMap: hours >= 19 ? true : false });
+	};
+
 	render() {
+		const { markers, darkMap, initialRegion } = this.state;
 		return (
-			<MapView
-				customMapStyle={getMapDark()}
-				clustering={true}
-				initialRegion={this.state.initialRegion}
-				style={{ flex: 1 }}
-				provider={PROVIDER_GOOGLE}>
-				{this.state.markers.map((marker, index) => (
-					<Marker key={index} coordinate={marker.coordinates}>
-						<Callout style={styles.markerStyle} tooltip={true}>
-							<View style={styles.tooltipContainer}>
-								<Text style={styles.white}>{marker.place}</Text>
-								<Text style={styles.yellow}>{`Confirmed: ${this.numberFormat(marker.confirmed)}`}</Text>
-								<Text style={styles.green}>{`Recovered: ${this.numberFormat(marker.recovered)}`}</Text>
-								<Text style={styles.blue}>{`Active: ${this.numberFormat(marker.active)}`}</Text>
-								<Text style={styles.red}>{`Deceased: ${this.numberFormat(marker.dead)}`}</Text>
-							</View>
-						</Callout>
-					</Marker>
-				))}
-			</MapView>
+			<View style={{ flex: 1 }}>
+				<MapView
+					customMapStyle={darkMap ? MAP_DARK : MAP_LIGHT}
+					clustering={true}
+					initialRegion={initialRegion}
+					style={{ flex: 1 }}
+					provider={PROVIDER_GOOGLE}>
+					{markers.map((marker, index) => (
+						<Marker key={index} coordinate={marker.coordinates}>
+							<Callout style={styles.markerStyle} tooltip={true}>
+								<View style={styles.tooltipContainer}>
+									<Text style={styles.white}>{marker.place}</Text>
+									<Text style={styles.yellow}>{`Confirmed: ${this.numberFormat(
+										marker.confirmed
+									)}`}</Text>
+									<Text style={styles.green}>{`Recovered: ${this.numberFormat(
+										marker.recovered
+									)}`}</Text>
+									<Text style={styles.blue}>{`Active: ${this.numberFormat(marker.active)}`}</Text>
+									<Text style={styles.red}>{`Deceased: ${this.numberFormat(marker.dead)}`}</Text>
+								</View>
+							</Callout>
+						</Marker>
+					))}
+				</MapView>
+				{/* <View style={styles.toggle}>
+					<Switch
+						trackColor={{ false: '#767577', true: '#81b0ff' }}
+						thumbColor={darkMap ? '#f5dd4b' : '#f4f3f4'}
+						ios_backgroundColor='#3e3e3e'
+						onValueChange={this.toggleSwitch}
+						value={darkMap}
+					/>
+				</View> */}
+			</View>
 		);
 	}
 }
@@ -130,5 +155,10 @@ const styles = StyleSheet.create({
 	blue: {
 		color: '#0288d1',
 		fontSize: 15
+	},
+	toggle: {
+		position: 'absolute', //use absolute position to show button on top of the map
+		top: height / 20, //for center align
+		left: width / 20
 	}
 });
