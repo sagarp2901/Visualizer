@@ -7,10 +7,10 @@ const { height } = Dimensions.get('window');
 const getConfig = (data) => ({
 	chart: {
 		type: 'bar',
-		height: height / 1.3
+		height: height / 1.28
 	},
 	title: {
-		text: 'Top 15 Affected Countries'
+		text: ''
 	},
 	xAxis: {
 		categories: data.countries

@@ -5,6 +5,7 @@ import MapScreen from '../screens/MapScreen';
 import TimeSeriesScreen from '../screens/TimeSeriesScreen';
 import DashboardScreen from '../screens/DashboardScreen';
 import BarsScreen from '../screens/BarsScreen';
+import Guide from '../screens/Guide';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Dashboard';
@@ -45,8 +46,16 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="Bars"
         component={BarsScreen}
         options={{
-          title: 'Bars',
+          title: 'Top 15',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="chart-bar" />,
+        }}
+      />
+       <BottomTab.Screen
+        name="Guide"
+        component={Guide}
+        options={{
+          title: 'CDC Guidelines',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="file-document-box-multiple-outline" />
         }}
       />
     </BottomTab.Navigator>
@@ -62,8 +71,10 @@ function getHeaderTitle(route) {
     case 'Map':
       return 'Heat Map';
     case 'Bars':
-      return 'Bar Chart';
+      return 'Top 15 Affected Countries';
     case 'Series':
       return 'Time Series';
+    case 'Guide':
+      return 'CDC Guidelines'
   }
 }

@@ -11,7 +11,8 @@ export default function(containerRef) {
 					Dashboard: 'dashboard',
 					Map: 'map',
 					Bars: 'bars',
-					Series: 'series'
+					Series: 'series',
+					Guide: 'guide'
 				}
 			}
 		}
